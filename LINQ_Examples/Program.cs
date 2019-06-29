@@ -11,6 +11,7 @@ namespace LINQ_Examples
         static void Main(string[] args)
         {
 
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             // OrderBy Продемонстрировать запрос на получение значений
             // в отсортированном порядке
 
@@ -28,8 +29,8 @@ namespace LINQ_Examples
 
             // Значения по убывающей
             posNums = from n in nums
-                          orderby n descending
-                          select n;
+                      orderby n descending
+                      select n;
             Console.Write($"Значения по убывающей: ");
             foreach (var i in posNums)
                 Console.Write(i + " ");
@@ -102,8 +103,8 @@ namespace LINQ_Examples
                 Console.WriteLine($"{r:#.##}");
 
 
-            
-            
+
+
             // Возвратить часть значения переменной диапазона
 
             EmailAddress[] addrs =
@@ -180,23 +181,95 @@ namespace LINQ_Examples
 
             var webAddrs = from addr in websites
                            where addr.LastIndexOf('.') != -1
+                           orderby addr.Substring(addr.LastIndexOf('.')) descending
                            group addr by addr.Substring(addr.LastIndexOf('.'));
 
             // Выполнить запрос и вывести его результаты.
-            foreach (var sites in webAddrs) {
+            foreach (IGrouping<string, string> sites in webAddrs) {
                 Console.WriteLine("Веб-сайты, сгруппированные " +
                                     "по имени домена " + sites.Key
                     );
 
-                foreach (var site in sites)
+                foreach (string site in sites)
                     Console.WriteLine(" " + site);
                 Console.WriteLine();
             }
 
             #endregion
 
+            #region INTO
 
-            #region TEST STRING
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ INTO");
+
+            // Сформировать запрос на получение списка веб-сайтов, группируемых
+            // по имени домена самого верхнего уровня, но выбрать только те группы,
+            // которые состоят более чем и двух членов.
+            // Здесь ws - это переменная диапазона для ряда групп,
+            // возвращаемых при выполнении первой половины запроса.
+            var webAddrs1 = from addr in websites
+                            where addr.LastIndexOf('.') != -1
+                            group addr by addr.Substring(addr.LastIndexOf('.'))
+                            into ws
+                            where ws.Count() > 2
+                            select ws;
+
+            Console.WriteLine("Домены самого верхнего уровня с белее чем двумя членами.\n");
+            foreach (var sites in webAddrs1) {
+                Console.WriteLine("Содержимое домена: " + sites.Key);
+                foreach (var site in sites)
+                    Console.WriteLine(" " + site);
+                Console.WriteLine();
+            }
+                       
+
+            #endregion
+
+            #region LET
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ LET");
+
+            string[] strs = {"alpha", "beta", "gamma"};
+
+            var chrs = from _str in strs
+                       let chrArray = _str.ToCharArray()
+                       from ch in chrArray
+                       orderby ch
+                       select ch;
+
+            Console.WriteLine("Отдельные символы, отсортированные по порядку:");
+            foreach (char c in chrs)
+                Console.Write(c + " ");
+            Console.WriteLine("\n");
+            
+
+            var webAddrs2 = from addr in websites
+                            let idx = addr.LastIndexOf('.')
+                            where idx != -1
+                            group addr by addr.Substring(idx)
+                            into ws
+                            where ws.Count() > 2
+                            select ws;
+
+            Console.WriteLine("Домены самого верхнего уровня с белее чем двумя членами.");
+            foreach (var sites in webAddrs2)
+            {
+                Console.WriteLine("Содержимое домена: " + sites.Key);
+                foreach (var site in sites)
+                    Console.WriteLine(" " + site);
+                Console.WriteLine();
+            }
+
+
+                #endregion
+
+
+
+                #region TEST STRING
+
+
+                Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("Работа со строками STRING");
 
             string var1 = " asd.123";
             string var2;
@@ -218,6 +291,9 @@ namespace LINQ_Examples
 
 
             #endregion
+
+
+
 
 
 
