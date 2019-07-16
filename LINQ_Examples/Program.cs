@@ -298,11 +298,52 @@ namespace LINQ_Examples
                               on item.ItemNumber equals entry.ItemNumber
                               select new { Name = item.Name, InStock = entry.InStock };
 
-            Console.WriteLine("Товар\tНаличие\n");
+            Console.WriteLine("\nТовар1\tНаличие1\n");
 
             foreach (var t in inStockList)
                 Console.WriteLine($"{t.Name}\t{t.InStock}");
 
+
+            #endregion
+
+            #region JOIN + INTO
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN + INTO");
+
+            string[] travelTypes = {
+                "Воздушный",
+                "Морской",
+                "Наземный",
+                "Речной"
+            };
+
+            Transport[] transports = {
+                new Transport("велосипед","Наземный"),
+                new Transport("аэростат","Воздушный"),
+                new Transport("лодка","Речной"),
+                new Transport("самолет","Воздушный"),
+                new Transport("конеэ","Речной"),
+                new Transport("биплан","Воздушный"),
+                new Transport("автомашина","Наземный"),
+                new Transport("судно","Морской"),
+                new Transport("поезд","Наземный")
+            };
+
+
+            var byHow = from how in travelTypes
+                        join trans in transports
+                        on how equals trans.How
+                        into lst
+                        select new { How = how, Tlist = lst };
+
+            foreach (var t in byHow)
+            {
+                Console.WriteLine($"К категории <{ t.How} транспорт> относится:");
+                foreach (var m in t.Tlist)
+                    Console.WriteLine($" " + m.Name);
+
+                Console.WriteLine();
+            }
 
 
             #endregion
