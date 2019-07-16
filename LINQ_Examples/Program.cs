@@ -292,6 +292,18 @@ namespace LINQ_Examples
             foreach (Temp t in inStockList)
                 Console.WriteLine($"{t.Name}\t{t.InStock}");
 
+            // Используем АНОНИМНЫЕ ТИПЫ
+            var inStockList1 = from item in items
+                              join entry in statusList
+                              on item.ItemNumber equals entry.ItemNumber
+                              select new { Name = item.Name, InStock = entry.InStock };
+
+            Console.WriteLine("Товар\tНаличие\n");
+
+            foreach (var t in inStockList)
+                Console.WriteLine($"{t.Name}\t{t.InStock}");
+
+
 
             #endregion
 
