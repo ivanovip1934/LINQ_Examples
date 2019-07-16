@@ -11,7 +11,7 @@ namespace LINQ_Examples
         static void Main(string[] args)
         {
 
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            //Console.OutputEncoding = System.Text.Encoding.UTF8;
             // OrderBy Продемонстрировать запрос на получение значений
             // в отсортированном порядке
 
@@ -261,14 +261,46 @@ namespace LINQ_Examples
             }
 
 
-                #endregion
+            #endregion
+
+            #region JOIN
+
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN");
+
+            Item[] items = {
+                new Item("Кусачки",1424),
+                new Item("Тиски",7892),
+                new Item("Молоток",8534),
+                new Item("Пила",6411)
+            };
+
+            InStockStatus[] statusList = {
+                new InStockStatus(1424,true),
+                new InStockStatus(7892,false),
+                new InStockStatus(8534,true),
+                new InStockStatus(6411,true)
+            };
+
+            var inStockList = from item in items
+                              join entry in statusList
+                              on item.ItemNumber equals entry.ItemNumber
+                              select new Temp(item.Name, entry.InStock);
+
+            Console.WriteLine("Товар\tНаличие\n");
+
+            foreach (Temp t in inStockList)
+                Console.WriteLine($"{t.Name}\t{t.InStock}");
+
+
+            #endregion
 
 
 
-                #region TEST STRING
+            #region TEST STRING
 
 
-                Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("----------------------------------------------");
             Console.WriteLine("Работа со строками STRING");
 
             string var1 = " asd.123";
