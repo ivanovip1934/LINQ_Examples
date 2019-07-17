@@ -11,7 +11,7 @@ namespace LINQ_Examples
         static void Main(string[] args)
         {
 
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            //Console.OutputEncoding = System.Text.Encoding.UTF8;
             // OrderBy Продемонстрировать запрос на получение значений
             // в отсортированном порядке
 
@@ -75,7 +75,7 @@ namespace LINQ_Examples
                 }
 
                 Console.WriteLine($"{acc.LastName}, {acc.FirsName}\t" +
-                                  "Номер счета: {0}, баланс: {1,10:C}",
+                                  "Номер счета: {0}, баланс: {1,10:N}",
                                   acc.AccountNumber, acc.Balance);
             }
 
@@ -264,65 +264,51 @@ namespace LINQ_Examples
             #endregion
 
             #region JOIN
+
             Console.WriteLine("----------------------------------------------");
-            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN ON EQUALS");
-            Console.WriteLine();
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN");
 
             Item[] items = {
-                new Item("Кусачки", 1424),
-                new Item("Тиски", 7892),
-                new Item("Молоток", 8534),
-                new Item("Пила", 6411)
+                new Item("Кусачки",1424),
+                new Item("Тиски",7892),
+                new Item("Молоток",8534),
+                new Item("Пила",6411)
             };
 
             InStockStatus[] statusList = {
-                new InStockStatus(1424, true),
-                new InStockStatus(7892, false),
-                new InStockStatus(8534, true),
-                new InStockStatus(6411, true)
-
+                new InStockStatus(1424,true),
+                new InStockStatus(7892,false),
+                new InStockStatus(8534,true),
+                new InStockStatus(6411,true)
             };
 
-            // Запрос объединяет объекты классов Item и InStockStatus для составления списка
-            // наименований товаров и их наличия на складе.
             var inStockList = from item in items
                               join entry in statusList
                               on item.ItemNumber equals entry.ItemNumber
                               select new Temp(item.Name, entry.InStock);
 
-            Console.WriteLine("Товар\tНаличие");
+            Console.WriteLine("Товар\tНаличие\n");
 
             foreach (Temp t in inStockList)
                 Console.WriteLine($"{t.Name}\t{t.InStock}");
 
-            Console.WriteLine();
-
-            #endregion
-
-            #region АНОНИМНЫЕ ТИПЫ
-            Console.WriteLine("----------------------------------------------");
-            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ АНОНИМНЫЕ ТИПЫ");
-            Console.WriteLine();
-
+            // Используем АНОНИМНЫЕ ТИПЫ
             var inStockList1 = from item in items
                               join entry in statusList
                               on item.ItemNumber equals entry.ItemNumber
-                              where entry.ItemNumber > 7000
                               select new { Name = item.Name, InStock = entry.InStock };
 
-            Console.WriteLine("Товар\tНаличие");
+            Console.WriteLine("\nТовар1\tНаличие1\n");
 
-            foreach (var t in inStockList1)
+            foreach (var t in inStockList)
                 Console.WriteLine($"{t.Name}\t{t.InStock}");
 
-            Console.WriteLine();
 
             #endregion
 
-            #region INTO and JOIN
+            #region JOIN + INTO
             Console.WriteLine("----------------------------------------------");
-            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ INTO вместе с JOIN");
-            Console.WriteLine();
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN + INTO");
 
             string[] travelTypes = {
                 "Воздушный",
@@ -331,41 +317,36 @@ namespace LINQ_Examples
                 "Речной"
             };
 
-            //Массив видов транспорта.
             Transport[] transports = {
-                new Transport("велосипед", "Наземный"),
-                new Transport("аэростат", "Воздушный"),
-                new Transport("лодка", "Речной"),
-                new Transport("самолет", "Воздушный"),
-                new Transport("каноэ", "Речной"),
-                new Transport("биплан", "Воздушный"),
-                new Transport("автомашина", "Наземный"),
-                new Transport("судно", "Морской"),
-                new Transport("поезд", "Наземный")
+                new Transport("велосипед","Наземный"),
+                new Transport("аэростат","Воздушный"),
+                new Transport("лодка","Речной"),
+                new Transport("самолет","Воздушный"),
+                new Transport("конеэ","Речной"),
+                new Transport("биплан","Воздушный"),
+                new Transport("автомашина","Наземный"),
+                new Transport("судно","Морской"),
+                new Transport("поезд","Наземный")
             };
 
-            // Сформировать запрос, в котором групповое объединение используется для составления списка
-            // видов транспорта по соответствующим категориям.
+
             var byHow = from how in travelTypes
                         join trans in transports
                         on how equals trans.How
                         into lst
                         select new { How = how, Tlist = lst };
-            // Выполнить запрос и вывести его результаты.
-            
-            foreach (var t in byHow) {
-                Console.WriteLine($"К категории <{t.How} транспорт> относится:");
 
-                
+            foreach (var t in byHow)
+            {
+                Console.WriteLine($"К категории <{ t.How} транспорт> относится:");
                 foreach (var m in t.Tlist)
-                    Console.WriteLine(" " + m.Name);
+                    Console.WriteLine($" " + m.Name);
 
                 Console.WriteLine();
             }
 
+
             #endregion
-
-
 
 
 

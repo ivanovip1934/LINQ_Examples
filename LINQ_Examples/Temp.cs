@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LINQ_Examples
 {
@@ -11,10 +8,9 @@ namespace LINQ_Examples
         public string Name { get; set; }
         public bool InStock { get; set; }
 
-        public Temp(string _name, bool _inStock) {
-            Name = _name;
-            InStock = _inStock;
+        public Temp(string name, bool inStock) {
+            Name = name;
+            InStock = inStock;
         }
-
     }
 }
