@@ -339,7 +339,7 @@ namespace LINQ_Examples
             foreach (var t in byHow)
             {
                 Console.WriteLine($"К категории <{ t.How} транспорт> относится:");
-                foreach (var m in t.Tlist)
+                foreach (Transport m in t.Tlist)
                     Console.WriteLine($" " + m.Name);
 
                 Console.WriteLine();
@@ -347,6 +347,28 @@ namespace LINQ_Examples
 
 
             #endregion
+
+
+            #region ЛЯМДА ВЫРАЖЕНИЯ
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN + INTO");
+
+            var webAddrs3 = websites.Where(w => w.LastIndexOf('.') != -1)
+                .GroupBy(w => w.Substring(w.LastIndexOf('.'), w.Length));
+
+            //Выполнить запрос и вывести результаты.
+            foreach (var sites in webAddrs) {
+                Console.WriteLine("Веб-сайты, сгруппированные по имени домена" + sites.Key);
+                foreach (var site in sites)
+                    Console.WriteLine(" " + site);
+                Console.WriteLine();
+            }
+
+
+
+            #endregion
+
+
 
 
 
