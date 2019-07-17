@@ -399,14 +399,29 @@ namespace LINQ_Examples
             var resarr = arrint.All(x => x > 0);
             var resarr1 = arrint.Any(x => x < 0);
 
+            var Avg = arrint.Average();
+            var ltAvg = from n in arrint
+                        let x = arrint.Average()
+                        where n < x
+                        select n;
+            
+            
+
             Console.WriteLine("Все элементы массиа arrint больше нуля? " + resarr);
-            Console.WriteLine("Есть хотя бы один элемент массива arrint меньше нуля? " + resarr1); 
+            Console.WriteLine("Есть хотя бы один элемент массива arrint меньше нуля? " + resarr1);
+            Console.WriteLine("Вывести все элементы массива arrint которые меньше среднего: " + Avg);
+            foreach (int i in ltAvg)
+                Console.Write(" " + i);
+
+            Console.WriteLine();
 
 
+            // Режимы выполнения запросов: отложенный и немедленный.
+            // Если испльзуются методы расширения, дающие результат отличающийся от последовательности,
+            // то режим выполения - немедленный. Например метод расширения Count(), ToArray(), ToList().
 
 
-
-
+             
 
 
 
