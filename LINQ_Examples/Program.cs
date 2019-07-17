@@ -351,18 +351,62 @@ namespace LINQ_Examples
 
             #region ЛЯМДА ВЫРАЖЕНИЯ
             Console.WriteLine("----------------------------------------------");
-            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ JOIN + INTO");
-
+            Console.WriteLine("ПРИМЕР ИСПОЛЬЗОВАНИЕ ЛЯМДА ВЫРАЖЕНИЯ");
+            
+            
+            //Выполнить запрос и вывести результаты.
             var webAddrs3 = websites.Where(w => w.LastIndexOf('.') != -1)
                 .GroupBy(w => w.Substring(w.LastIndexOf('.'), w.Length));
-
-            //Выполнить запрос и вывести результаты.
+            
             foreach (var sites in webAddrs) {
                 Console.WriteLine("Веб-сайты, сгруппированные по имени домена" + sites.Key);
                 foreach (var site in sites)
                     Console.WriteLine(" " + site);
                 Console.WriteLine();
             }
+
+            //Выполнить запрос и вывести результаты.
+            var inStockList2 = items.Join(statusList,
+                                k1=>k1.ItemNumber,
+                                k2=>k2.ItemNumber,
+                                (k1,k2)=>new { k1.Name,k2.InStock});
+            Console.WriteLine("Товар\tНаличие\n");
+
+            foreach (var t in inStockList2)
+                Console.WriteLine($"{t.Name}\t{t.InStock}");
+
+
+
+            ///             Наиболее часто используемые методы расширения, связанные с запросами
+
+            ////    All(predicate)  Возвращает логическое значение true,
+            ////                    если все элементы в последовательности
+            ////                    удовлетворяют условию, задаваемому параметром "predicate".
+            ////    Any(predicate)  Возвращает логическое значение true, если любой элемент в последовательности
+            ////                    удовлетворяет условию, задаваемому параметром "predicate"
+            ////    Average()       Возвращает среднее всех значений в числовой последовательности
+            ////    Contains(value) Возвращает логическое значение true, если в последовательности
+            ////                    содержится указанный объект
+            ////    Count()         Возвращает длину последовательности, т.е.количество составляющих
+            ////                    ее элементов
+            ////    First()         Возвращает первый элемент в последовательности
+            ////    Last()          Возвращает последний элемент в последовательности
+            ////    Max()           Возвращает максимальное значение в последовательности
+            ////    Min()           Возвращает минимальное значение в последовательности
+            ////    Sum()           Возвращает сумму значений в числовой последовательности
+
+            int[] arrint = { 1, 2, 10, 56, 234, 25, -1 };
+            var resarr = arrint.All(x => x > 0);
+            var resarr1 = arrint.Any(x => x < 0);
+
+            Console.WriteLine("Все элементы массиа arrint больше нуля? " + resarr);
+            Console.WriteLine("Есть хотя бы один элемент массива arrint меньше нуля? " + resarr1); 
+
+
+
+
+
+
 
 
 
